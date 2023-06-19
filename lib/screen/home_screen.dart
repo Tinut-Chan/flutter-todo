@@ -7,14 +7,18 @@ import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
   static const id = '/Home_screen';
-  final TodoController todoController = Get.put(TodoController());
+  // final TodoController todoController = Get.put(TodoController());
 
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Scaffold(
+    return GetBuilder(
+      init: TodoController(),
+      initState: (state) {
+        state.controller?.update();
+      },
+      builder: (controller) => Scaffold(
         appBar: AppBar(
           title: const Text('Todo List'),
           centerTitle: true,
@@ -29,14 +33,14 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         floatingActionButton:
-            todoController.searchEditingController.value.text.isEmpty
+            controller.searchEditingController.value.text.isEmpty
                 ? FloatingActionButton(
                     child: const Icon(
                       Icons.add,
                     ),
                     onPressed: () {
                       Get.toNamed(TodoScreen.id);
-                      todoController.varClear();
+                      controller.varClear();
                     },
                   )
                 : null,
@@ -51,9 +55,10 @@ class HomeScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15.0),
               ),
               child: TextField(
-                controller: todoController.searchEditingController.value,
+                controller: controller.searchEditingController.value,
                 onChanged: (value) {
-                  todoController.filterList(value);
+                  controller.filterList(value);
+                  controller.update();
                 },
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(0),
@@ -73,7 +78,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: todoController.searchEditingController.value.text.isEmpty
+              child: controller.searchEditingController.value.text.isEmpty
                   ? ListView.builder(
                       itemBuilder: (context, index) => Dismissible(
                         key: UniqueKey(),
@@ -85,14 +90,14 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         onDismissed: (_) {
-                          todoController.todos.removeAt(index);
+                          controller.todos.removeAt(index);
                           Get.snackbar('Remove!', "Task was succesfully Delete",
                               snackPosition: SnackPosition.BOTTOM);
                         },
                         child: ListTile(
                           title: Text(
-                            todoController.todos[index].text!,
-                            style: todoController.todos[index].done
+                            controller.todos[index].text!,
+                            style: controller.todos[index].done
                                 ? const TextStyle(
                                     color: Colors.red,
                                     decoration: TextDecoration.lineThrough,
@@ -107,18 +112,18 @@ class HomeScreen extends StatelessWidget {
                             icon: const Icon(Icons.edit),
                           ),
                           leading: Checkbox(
-                            value: todoController.todos[index].done,
+                            value: controller.todos[index].done,
                             onChanged: (neWvalue) {
-                              var todo = todoController.todos[index];
+                              var todo = controller.todos[index];
                               todo.done = neWvalue!;
-                              todoController.todos[index] = todo;
+                              controller.todos[index] = todo;
                             },
                           ),
                         ),
                       ),
-                      itemCount: todoController.todos.length,
+                      itemCount: controller.todos.length,
                     )
-                  : todoController.results.isNotEmpty
+                  : controller.results.isNotEmpty
                       ? ListView.builder(
                           itemBuilder: (context, index) => Dismissible(
                             key: UniqueKey(),
@@ -130,15 +135,15 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                             onDismissed: (_) {
-                              todoController.todos.removeAt(index);
+                              controller.todos.removeAt(index);
                               Get.snackbar(
                                   'Remove!', "Task was succesfully Delete",
                                   snackPosition: SnackPosition.BOTTOM);
                             },
                             child: ListTile(
                               title: Text(
-                                todoController.results[index].text!,
-                                style: todoController.results[index].done
+                                controller.results[index].text!,
+                                style: controller.results[index].done
                                     ? const TextStyle(
                                         color: Colors.red,
                                         decoration: TextDecoration.lineThrough,
@@ -153,16 +158,16 @@ class HomeScreen extends StatelessWidget {
                                 icon: const Icon(Icons.edit),
                               ),
                               leading: Checkbox(
-                                value: todoController.results[index].done,
+                                value: controller.results[index].done,
                                 onChanged: (neWvalue) {
-                                  var todo = todoController.results[index];
+                                  var todo = controller.results[index];
                                   todo.done = neWvalue!;
-                                  todoController.results[index] = todo;
+                                  controller.results[index] = todo;
                                 },
                               ),
                             ),
                           ),
-                          itemCount: todoController.results.length,
+                          itemCount: controller.results.length,
                         )
                       : Column(
                           children: [

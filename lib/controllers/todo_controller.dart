@@ -6,22 +6,9 @@ import 'package:get_storage/get_storage.dart';
 class TodoController extends GetxController {
   final searchEditingController = TextEditingController().obs;
   var todos = List<Todo>.empty().obs;
-  // ConnectivityResult connectionStatus = ConnectivityResult.none;
-  // final Connectivity connectivity = Connectivity();
-  // var isConnected = false.obs;
-  // late StreamSubscription<ConnectivityResult> connectivitySubscription;
 
   @override
   void onInit() {
-    // connectivitySubscription =
-    //     Connectivity().onConnectivityChanged.listen((event) {
-    //   if (event == ConnectivityResult.wifi ||
-    //       event == ConnectivityResult.mobile) {
-    //     isConnected.value = true;
-    //   } else {
-    //     isConnected.value = false;
-    //   }
-    // });
     List? storedTodos = GetStorage().read<List>('todo');
     if (storedTodos != null) {
       todos = storedTodos.map((e) => Todo.fromJson(e)).toList().obs;
@@ -33,7 +20,7 @@ class TodoController extends GetxController {
   }
 
   final results = <Todo>[].obs;
-  void filterList(String searchText) {
+  filterList(String searchText) {
     if (searchText.isEmpty) {
       results.value = todos;
     } else {
@@ -43,6 +30,7 @@ class TodoController extends GetxController {
               ))
           .toList();
     }
+    return searchText;
   }
 
   varClear() {
