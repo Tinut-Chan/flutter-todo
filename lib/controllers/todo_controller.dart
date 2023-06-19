@@ -45,6 +45,10 @@ class TodoController extends GetxController {
     }
   }
 
+  varClear() {
+    searchEditingController.value.clear();
+  }
+
   // final todo = FirebaseDatabase.instance.reference();
   // submitData() {
   //   todo.child('items').add(items);

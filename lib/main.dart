@@ -13,13 +13,24 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: HomeScreen.id,
-      getPages: [
-        GetPage(name: TodoScreen.id, page: () => TodoScreen()),
-        GetPage(name: HomeScreen.id, page: () => HomeScreen()),
-      ],
+    return GestureDetector(
+      onTap: () => unFocus(context),
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: HomeScreen.id,
+        getPages: [
+          GetPage(name: TodoScreen.id, page: () => TodoScreen()),
+          GetPage(name: HomeScreen.id, page: () => HomeScreen()),
+        ],
+      ),
     );
+  }
+
+  // unfocus function
+  void unFocus(BuildContext context) {
+    final FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus!.unfocus();
+    }
   }
 }

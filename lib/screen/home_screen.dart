@@ -36,6 +36,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       Get.toNamed(TodoScreen.id);
+                      todoController.varClear();
                     },
                   )
                 : null,
