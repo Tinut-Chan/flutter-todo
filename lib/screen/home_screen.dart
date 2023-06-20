@@ -106,10 +106,27 @@ class HomeScreen extends StatelessWidget {
                                     color: Colors.black,
                                   ),
                           ),
-                          trailing: IconButton(
-                            onPressed: () =>
-                                Get.to(() => TodoEdit(index: index)),
-                            icon: const Icon(Icons.edit),
+                          trailing: Wrap(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  controller.todos.removeAt(index);
+                                  Get.snackbar(
+                                      'Remove!', "Task was succesfully Delete",
+                                      snackPosition: SnackPosition.BOTTOM);
+                                  controller.update();
+                                },
+                                icon: const Icon(
+                                  Icons.delete_forever_rounded,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () =>
+                                    Get.to(() => TodoEdit(index: index)),
+                                icon: const Icon(Icons.edit),
+                              ),
+                            ],
                           ),
                           leading: Checkbox(
                             value: controller.todos[index].done,
@@ -117,6 +134,7 @@ class HomeScreen extends StatelessWidget {
                               var todo = controller.todos[index];
                               todo.done = neWvalue!;
                               controller.todos[index] = todo;
+                              controller.update();
                             },
                           ),
                         ),
@@ -163,6 +181,7 @@ class HomeScreen extends StatelessWidget {
                                   var todo = controller.results[index];
                                   todo.done = neWvalue!;
                                   controller.results[index] = todo;
+                                  controller.update();
                                 },
                               ),
                             ),

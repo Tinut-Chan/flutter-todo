@@ -52,6 +52,7 @@ class TodoEdit extends StatelessWidget {
                         var editing = controller.todos[index!];
                         editing.text = textEditingController.text;
                         controller.todos[index!] = editing;
+                        controller.update();
                         Get.back();
                       },
                     ),

@@ -10,7 +10,6 @@ class TodoScreen extends StatelessWidget {
   static const id = '/Todo_Screen';
 
   final TextEditingController textEditingController = TextEditingController();
-  // final TodoController todoController = Get.find<TodoController>();
 
   @override
   Widget build(BuildContext context) {
